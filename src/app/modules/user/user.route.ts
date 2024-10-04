@@ -7,4 +7,4 @@ const router = Router();
 router.post('/create-student', userControllers.createStudent);
 
 
-export const UserRoute = router;
+export const UserRoutes = router;
