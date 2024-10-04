@@ -1,20 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
+import httpStatus from 'http-status';
+import sendResponse from '../../utils/SendRespose';
 
-
-
-const getAllStudents = async (req: Request, res: Response,next:NextFunction) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await StudentServices.getAllStudentsFromDB();
 
-    res.status(200).json({
+    sendResponse(res, {
       success: true,
       message: 'Students are retrieved succesfully',
+      statusCode: httpStatus.OK,
       data: result,
     });
   } catch (err: any) {
-  next(err)
+    next(err);
   }
 };
 
@@ -28,13 +33,14 @@ const getSingleStudent = async (
 
     const result = await StudentServices.getSingleStudentFromDB(studentId);
 
-    res.status(200).json({
+    sendResponse(res, {
       success: true,
       message: 'Student is retrieved succesfully',
+      statusCode: httpStatus.OK,
       data: result,
     });
   } catch (err: any) {
-  next(err)
+    next(err);
   }
 };
 
@@ -48,13 +54,14 @@ const deleteStudent = async (
 
     const result = await StudentServices.deleteStudentFromDB(studentId);
 
-    res.status(200).json({
+    sendResponse(res, {
       success: true,
       message: 'Student is deleted succesfully',
+      statusCode: httpStatus.OK,
       data: result,
     });
   } catch (err: any) {
-    next(err)
+    next(err);
   }
 };
 
