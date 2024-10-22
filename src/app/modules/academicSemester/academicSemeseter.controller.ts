@@ -10,7 +10,6 @@ const createAcademicSemester = catchAsync(async (req, res) => {
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
     throw new Error('Invalid Semester Code');
   }
-
   const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
     req.body,
   );
@@ -23,6 +22,32 @@ const createAcademicSemester = catchAsync(async (req, res) => {
   });
 });
 
+const getAllAcademicSemester = catchAsync(async (req, res) => {
+  const result = await AcademicSemesterServices.getAllAcademicSemesterFromDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'all academic semester retrieve successfully',
+    data: result,
+  });
+});
+
+const getSingleAcademicSemester = catchAsync(async (req, res) => {
+  const {id} = req.params;
+  const result =
+    await AcademicSemesterServices.getSingleAcademicSemesterFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'single academic semester retrieve successfully',
+    data: result,
+  });
+});
+
 export const AcademicSemesterControllers = {
   createAcademicSemester,
+  getAllAcademicSemester,
+  getSingleAcademicSemester,
 };
