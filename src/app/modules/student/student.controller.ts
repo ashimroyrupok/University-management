@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RequestHandler } from 'express';
 import { StudentServices } from './student.service';
 import httpStatus from 'http-status';
 import sendResponse from '../../utils/SendRespose';
+import catchAsync from '../../utils/catchAsync';
 
-const getAllStudents: RequestHandler = async (req, res, next) => {
+const getAllStudents = catchAsync(async (req, res, next) => {
   try {
     const result = await StudentServices.getAllStudentsFromDB();
 
@@ -17,9 +17,9 @@ const getAllStudents: RequestHandler = async (req, res, next) => {
   } catch (err: any) {
     next(err);
   }
-};
+});
 
-const getSingleStudent: RequestHandler = async (req, res, next) => {
+const getSingleStudent = catchAsync(async (req, res, next) => {
   try {
     const { studentId } = req.params;
 
@@ -34,9 +34,9 @@ const getSingleStudent: RequestHandler = async (req, res, next) => {
   } catch (err: any) {
     next(err);
   }
-};
+});
 
-const deleteStudent: RequestHandler = async (req, res, next) => {
+const deleteStudent = catchAsync(async (req, res, next) => {
   try {
     const { studentId } = req.params;
 
@@ -51,7 +51,7 @@ const deleteStudent: RequestHandler = async (req, res, next) => {
   } catch (err: any) {
     next(err);
   }
-};
+});
 
 export const StudentControllers = {
   getAllStudents,
