@@ -1,7 +1,9 @@
+import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { TStudent } from '../student/student.interface';
 import { Student } from '../student/student.model';
 import { TUser } from './user.interface';
 import { User } from './user.model';
+import { generateStudentId } from './user.utils';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   //   if (await Student.isUserExists(studentData.id)) {
@@ -15,6 +17,15 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   userData.id = '20300001';
 
   userData.role = 'student';
+
+  // find academic semester info
+  const admissionSemester = await AcademicSemester.findById(
+    studentData.admissionSemester,
+  );
+  // console.log(admissionSemester,"admission semester")
+
+  // set generated id
+  userData.id = await generateStudentId(admissionSemester!);
 
   const newUser = await User.create(userData);
   if (Object.keys(newUser).length > 0) {

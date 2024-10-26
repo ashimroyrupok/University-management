@@ -1,5 +1,11 @@
 import { Schema, model } from 'mongoose';
-import { StudentModel, TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
+import {
+  StudentModel,
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  TUserName,
+} from './student.interface';
 const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
@@ -69,11 +75,11 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, required: [true, 'ID is required'], unique: true },
-    user:{
+    user: {
       type: Schema.Types.ObjectId,
-      required:[true," user id is must be required"],
-      unique:true,
-      ref:"User"
+      required: [true, ' user id is must be required'],
+      unique: true,
+      ref: 'User',
     },
     name: {
       type: userNameSchema,
@@ -130,6 +136,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       },
       default: 'active',
     },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -146,8 +156,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 studentSchema.virtual('fullName').get(function () {
   return this.name.firstName + this.name.middleName + this.name.lastName;
 });
-
-
 
 // Query Middleware
 studentSchema.pre('find', function (next) {
