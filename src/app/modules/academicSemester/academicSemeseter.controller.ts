@@ -3,12 +3,13 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/SendRespose';
 import { AcademicSemesterServices } from './academicSemeseter.service';
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
+import AppError from '../../errors/AppError';
 
 const createAcademicSemester = catchAsync(async (req, res) => {
   const payload = req.body;
 
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-    throw new Error('Invalid Semester Code');
+    throw new AppError(httpStatus.NOT_FOUND,'Invalid Semester Code');
   }
   const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
     req.body,

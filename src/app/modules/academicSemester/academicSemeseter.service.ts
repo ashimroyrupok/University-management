@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemester } from './academicSemester.model';
@@ -27,7 +29,7 @@ const updateAcademicSemesterintoDB = async (
     payload.code &&
     academicSemesterNameCodeMapper[payload.name] !== payload.code
   ) {
-    throw new Error('Invalid Semester code ');
+    throw new AppError(httpStatus.NOT_FOUND,'Invalid Semester code ');
   }
 
   const result = await AcademicSemester.findByIdAndUpdate(id, payload, {
