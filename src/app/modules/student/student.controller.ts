@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StudentServices } from './student.service';
 import httpStatus from 'http-status';
@@ -20,20 +22,16 @@ const getAllStudents = catchAsync(async (req, res, next) => {
 });
 
 const getSingleStudent = catchAsync(async (req, res, next) => {
-  try {
-    const { studentId } = req.params;
+  const { studentId } = req.params;
 
-    const result = await StudentServices.getSingleStudentFromDB(studentId);
+  const result = await StudentServices.getSingleStudentFromDB(studentId);
 
-    sendResponse(res, {
-      success: true,
-      message: 'Student is retrieved succesfully',
-      statusCode: httpStatus.OK,
-      data: result,
-    });
-  } catch (err: any) {
-    next(err);
-  }
+  sendResponse(res, {
+    success: true,
+    message: 'Student is retrieved succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
 });
 
 const deleteStudent = catchAsync(async (req, res, next) => {
@@ -53,8 +51,21 @@ const deleteStudent = catchAsync(async (req, res, next) => {
   }
 });
 
+const updateStudent = catchAsync(async (req, res, next) => {
+  const { studentId } = req.params;
+  const { student } = req.body;
+  const result = await StudentServices.updateStudentIntoDB(studentId, student);
+  sendResponse(res, {
+    success: true,
+    message: 'Student is updated succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+
 export const StudentControllers = {
   getAllStudents,
   getSingleStudent,
   deleteStudent,
+  updateStudent,
 };
