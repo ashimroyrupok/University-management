@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { TErrorSource } from '../interface/error.interface';
 import config from '../config';
 import { handleZodError } from '../errors/handleZodError';
+import handleValidationError from '../errors/handleValidatonError';
 
 const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,9 +23,16 @@ const globalErrorHandler = (
       message: 'something went wrong',
     },
   ];
-
+  // handle zod errors
   if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
+    message = simplifiedError?.message;
+    statusCode = simplifiedError?.statusCode;
+    errorSources = simplifiedError.errorSources;
+  }
+  // handle mongoose error from here
+  else if (err?.name === 'ValidationError') {
+    const simplifiedError = handleValidationError(err);
     message = simplifiedError?.message;
     statusCode = simplifiedError?.statusCode;
     errorSources = simplifiedError.errorSources;
