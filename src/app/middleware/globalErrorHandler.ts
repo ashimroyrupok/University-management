@@ -6,6 +6,7 @@ import config from '../config';
 import { handleZodError } from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidatonError';
 import handleCastError from '../errors/handleCastError';
+import handleDuplicateCastError from '../errors/handleDuplicateCastError';
 
 const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,6 +42,13 @@ const globalErrorHandler = (
   // handle cast error from here
   else if (err?.name === 'CastError') {
     const simplifiedError = handleCastError(err);
+    message = simplifiedError?.message;
+    statusCode = simplifiedError?.statusCode;
+    errorSources = simplifiedError.errorSources;
+  }
+  // handle cast error from here
+  else if (err?.code === 11000) {
+    const simplifiedError = handleDuplicateCastError(err);
     message = simplifiedError?.message;
     statusCode = simplifiedError?.statusCode;
     errorSources = simplifiedError.errorSources;

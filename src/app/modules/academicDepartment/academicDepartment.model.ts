@@ -20,14 +20,14 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>(
   },
 );
 // checking department is exists or not before save
-academicDepartmentSchema.pre('save', async function (next) {
-  const isDepartmentExist = await AcademicDepartment.find({ name: this.name });
+// academicDepartmentSchema.pre('save', async function (next) {
+//   const isDepartmentExist = await AcademicDepartment.find({ name: this.name });
 
-  if (isDepartmentExist) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This Department already exists');
-  }
-  next();
-});
+//   if (isDepartmentExist) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'This Department already exists');
+//   }
+//   next();
+// });
 
 //
 
