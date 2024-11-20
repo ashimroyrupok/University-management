@@ -5,6 +5,7 @@ import { TErrorSource } from '../interface/error.interface';
 import config from '../config';
 import { handleZodError } from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidatonError';
+import handleCastError from '../errors/handleCastError';
 
 const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,13 +38,20 @@ const globalErrorHandler = (
     statusCode = simplifiedError?.statusCode;
     errorSources = simplifiedError.errorSources;
   }
+  // handle cast error from here
+  else if (err?.name === 'CastError') {
+    const simplifiedError = handleCastError(err);
+    message = simplifiedError?.message;
+    statusCode = simplifiedError?.statusCode;
+    errorSources = simplifiedError.errorSources;
+  }
 
   // main return for error messages
   res.status(statusCode).json({
     success: false,
     message,
     errorSources,
-    // error: err,
+    error: err,
     stack: config.node_env === 'development' ? err.stack : null,
   });
 };
