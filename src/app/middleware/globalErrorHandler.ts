@@ -17,8 +17,8 @@ const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
-  let statusCode = err.statusCode || 500;
-  let message = err?.message || 'Something went wrong';
+  let statusCode = 500;
+  let message = 'Something went wrong';
 
   let errorSources: TErrorSource = [
     {
@@ -58,6 +58,17 @@ const globalErrorHandler = (
   else if (err instanceof AppError) {
     message = err?.message;
     statusCode = err?.statusCode;
+    errorSources = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ];
+  }
+  // handle error from here
+  else if (err instanceof Error) {
+    message = err?.message;
+
     errorSources = [
       {
         path: '',
