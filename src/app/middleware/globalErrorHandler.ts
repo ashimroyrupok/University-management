@@ -7,6 +7,7 @@ import { handleZodError } from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidatonError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateCastError from '../errors/handleDuplicateCastError';
+import AppError from '../errors/AppError';
 
 const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,6 +53,17 @@ const globalErrorHandler = (
     message = simplifiedError?.message;
     statusCode = simplifiedError?.statusCode;
     errorSources = simplifiedError.errorSources;
+  }
+  // handle appError from here
+  else if (err instanceof AppError) {
+    message = err?.message;
+    statusCode = err?.statusCode;
+    errorSources = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ];
   }
 
   // main return for error messages
