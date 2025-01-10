@@ -4,16 +4,44 @@ import { User } from '../user/user.model';
 import { Student } from './student.model';
 import mongoose from 'mongoose';
 import { TStudent } from './student.interface';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { studentSearchableFields } from './student.constant';
 
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find()
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+  // let searchTerm:any = '';
+  // if (query?.searchTerm) {
+  //   searchTerm = query?.searchTerm;
+  // }
+
+  // const result = await Student.find({
+  //   $or: ['email', 'name.firstName', 'presentAddress'].map((field) => ({
+  //     [field]: { $regex: searchTerm, $options: 'i' },
+  //   })),
+  // })
+  // .populate({
+  //   path: 'academicDepartment',
+  //   populate: {
+  //     path: 'academicFaculty',
+  //   },
+  // })
+  // .populate('admissionSemester');
+  // return result;
+
+  const studentQuery = new QueryBuilder(Student.find(), query)
+    .search(studentSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await studentQuery.modelQuery
     .populate({
       path: 'academicDepartment',
       populate: {
         path: 'academicFaculty',
       },
     })
-    .populate('admissionSemester');
+    .populate('admissionSemester') ;
   return result;
 };
 

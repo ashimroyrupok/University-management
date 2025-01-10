@@ -7,18 +7,17 @@ import sendResponse from '../../utils/SendRespose';
 import catchAsync from '../../utils/catchAsync';
 
 const getAllStudents = catchAsync(async (req, res, next) => {
-  try {
-    const result = await StudentServices.getAllStudentsFromDB();
 
-    sendResponse(res, {
-      success: true,
-      message: 'Students are retrieved succesfully',
-      statusCode: httpStatus.OK,
-      data: result,
-    });
-  } catch (err: any) {
-    next(err);
-  }
+  const query =req?.query;
+
+  const result = await StudentServices.getAllStudentsFromDB(query);
+
+  sendResponse(res, {
+    success: true,
+    message: 'Students are retrieved succesfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
 });
 
 const getSingleStudent = catchAsync(async (req, res, next) => {
