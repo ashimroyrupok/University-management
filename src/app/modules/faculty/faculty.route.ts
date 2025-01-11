@@ -1,6 +1,6 @@
 import { ValidateRequest } from '../../middleware/validateRequest';
 import { FacultyControllers } from './faculty.controller';
-import { updateFacultyValidationSchema } from './faculty.validation';
+import { facultyValidations } from './faculty.validation';
 import express from 'express';
 
 const router = express.Router();
@@ -9,7 +9,7 @@ router.get('/:id', FacultyControllers.getSingleFaculty);
 
 router.patch(
   '/:id',
-  ValidateRequest(updateFacultyValidationSchema),
+  ValidateRequest(facultyValidations.updateFacultyValidationSchema),
   FacultyControllers.updateFaculty,
 );
 

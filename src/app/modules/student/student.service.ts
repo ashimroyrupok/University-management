@@ -1,11 +1,12 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
-import { Student } from './student.model';
 import mongoose from 'mongoose';
-import { TStudent } from './student.interface';
 import QueryBuilder from '../../builder/QueryBuilder';
+import {Student} from './student.model'
 import { studentSearchableFields } from './student.constant';
+import { TStudent } from './student.interface';
+
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   // let searchTerm:any = '';
@@ -47,7 +48,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
 const getSingleStudentFromDB = async (id: string) => {
   // const result = await Student.aggregate([{ $match: { id } }]);
-  const result = await Student.findOne({ id: id })
+  const result = await Student.findById({id})
     .populate({
       path: 'academicDepartment',
       populate: {
@@ -63,8 +64,8 @@ const deleteStudentFromDB = async (id: string) => {
 
   try {
     session.startTransaction();
-    const deleteUser = await User.findOneAndUpdate(
-      { id: id },
+    const deleteUser = await User.findByIdAndUpdate(
+      {  id },
       { isDeleted: true },
       { new: true, session },
     );
@@ -73,8 +74,8 @@ const deleteStudentFromDB = async (id: string) => {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
     }
 
-    const deleteStudent = await Student.findOneAndUpdate(
-      { id: id },
+    const deleteStudent = await Student.findByIdAndUpdate(
+      { id },
       { isDeleted: true },
       { new: true, session },
     );
@@ -117,8 +118,8 @@ const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
 
   console.log(modificationUpdateData, 'modified data');
 
-  const result = await Student.findOneAndUpdate(
-    { id: id },
+  const result = await Student.findByIdAndUpdate(
+    { id },
     modificationUpdateData,
     {
       new: true,

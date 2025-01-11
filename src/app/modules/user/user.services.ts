@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
-import { TStudent } from '../student/student.interface';
-import { Student } from '../student/student.model';
 import { TUser } from './user.interface';
 import { User } from './user.model';
 import { generateStudentId } from './user.utils';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
+import { Student } from '../student/student.model';
+import { TStudent } from '../student/student.interface';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   //   if (await Student.isUserExists(studentData.id)) {
@@ -48,6 +48,7 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
     await session.commitTransaction();
     await session.endSession();
     return newStudent;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     // console.log(error)
     await session.abortTransaction();

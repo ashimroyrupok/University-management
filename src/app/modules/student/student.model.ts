@@ -6,6 +6,7 @@ import {
   TStudent,
   TUserName,
 } from './student.interface';
+
 const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
