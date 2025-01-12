@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 
 export type TPreRequisiteCourses = {
   course: Schema.Types.ObjectId;
@@ -12,4 +12,9 @@ export type TCourse = {
   credits: number;
   preRequisiteCourses: [TPreRequisiteCourses];
   isDeleted: boolean;
+};
+
+export type TCourseFaculty = {
+  course: Types.ObjectId;
+  faculties: [Types.ObjectId];
 };
